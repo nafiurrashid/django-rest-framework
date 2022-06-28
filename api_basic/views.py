@@ -31,6 +31,11 @@ class GenericAPIView(generics.GenericAPIView, mixins.ListModelMixin, mixins.Crea
 
     def delete(self, request, id=None):
         return self.destroy(request,id)
+class GenericAPIListView(generics.GenericAPIView,mixins.ListModelMixin):
+    serializer_class=ArticleSerializer
+    queryset=Article.objects.all()
+    def get(self, request):
+        return self.list(request)
 
 class ArticleAPIView(APIView):
     def get(self,request):
@@ -108,6 +113,7 @@ def article_details(request,pk):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
     elif request.method == 'DELETE':
         article.delete()
